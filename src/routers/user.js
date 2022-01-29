@@ -20,37 +20,37 @@ router.post('/users', async (req, res) => {
     }
 })
 
-router.post('/users/login',async(req,res)=>{
-    try{
-        const user = await User.findByCredentials(req.body.email,req.body.password)
-        const token = await user.generateAuthToken()
-        res.send({user, token})
-    }catch(e){
-        res.status(400).send()
-    }
-})
+// router.post('/users/login',async(req,res)=>{
+//     try{
+//         const user = await User.findByCredentials(req.body.email,req.body.password)
+//         const token = await user.generateAuthToken()
+//         res.send({user, token})
+//     }catch(e){
+//         res.status(400).send()
+//     }
+// })
 
-router.post('/users/logout',auth,async(req,res)=>{
-    try{
-        req.user.tokens = req.user.tokens.filter((token)=>{
-            return token.token !== req.token
-        })
-        await req.user.save()
-        res.send()
-    }catch(e){
-        res.status(500).send()
-    }
-})
+// router.post('/users/logout',auth,async(req,res)=>{
+//     try{
+//         req.user.tokens = req.user.tokens.filter((token)=>{
+//             return token.token !== req.token
+//         })
+//         await req.user.save()
+//         res.send()
+//     }catch(e){
+//         res.status(500).send()
+//     }
+// })
 
-router.post('/users/logoutAll',auth,async(req,res)=>{
-    try{
-        req.user.tokens = []
-        await req.user.save()
-        res.send()
-    }catch(e){
-        res.status(500).send()
-    }
-})
+// router.post('/users/logoutAll',auth,async(req,res)=>{
+//     try{
+//         req.user.tokens = []
+//         await req.user.save()
+//         res.send()
+//     }catch(e){
+//         res.status(500).send()
+//     }
+// })
 
 router.get('/users/me',auth, async (req, res) => {
     res.send(req.user)
@@ -97,14 +97,14 @@ const avatar = multer({
     storage
 })
 
-router.post('/users/me/avatar',auth, avatar.single('avatar'), async(req,res)=>{
-    const buffer = await sharp(req.file.buffer).resize({ width:250 , height:250 }).png().toBuffer()
-    req.user.avatar = buffer
-    await req.user.save()
-    res.status(200).send()
-},(error,req,res,next)=>{
-    res.status(400).send({error: error.message})
-})
+// router.post('/users/me/avatar',auth, avatar.single('avatar'), async(req,res)=>{
+//     const buffer = await sharp(req.file.buffer).resize({ width:250 , height:250 }).png().toBuffer()
+//     req.user.avatar = buffer
+//     await req.user.save()
+//     res.status(200).send()
+// },(error,req,res,next)=>{
+//     res.status(400).send({error: error.message})
+// })
 
 router.delete('/users/me/avatar',auth,async(req,res)=>{
     req.user.avatar = undefined
